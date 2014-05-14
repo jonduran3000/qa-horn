@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/QAHorn.iml" filepath="$PROJECT_DIR$/QAHorn.iml" />
+      <module fileurl="file://$PROJECT_DIR$/qahornapp/qahornapp.iml" filepath="$PROJECT_DIR$/qahornapp/qahornapp.iml" />
+    </modules>
+  </component>
+</project>
+
