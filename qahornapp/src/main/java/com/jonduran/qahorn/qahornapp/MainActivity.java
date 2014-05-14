@@ -4,14 +4,14 @@ import android.app.Activity;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
 
 public class MainActivity extends Activity {
+    private int originalVolume = 0;
+    private AudioManager audioManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,10 +20,8 @@ public class MainActivity extends Activity {
 
         this.getActionBar().hide();
 
-        final float count = 100 * .01f;
-
-        final AudioManager audioManager = (AudioManager)getSystemService(AUDIO_SERVICE);
-        final int originalVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        audioManager = (AudioManager)getSystemService(AUDIO_SERVICE);
+        originalVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
 
         final ImageButton hornButton = (ImageButton)this.findViewById(R.id.horn_button);
@@ -32,7 +30,6 @@ public class MainActivity extends Activity {
             public void onClick(View view) {
                 MediaPlayer mp = MediaPlayer.create(MainActivity.this, R.raw.inception);
                 mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                //mp.setVolume(count, count);
                 mp.start();
             }
         });
@@ -48,7 +45,6 @@ public class MainActivity extends Activity {
                         public void onClick(View view) {
                             MediaPlayer mp = MediaPlayer.create(MainActivity.this, R.raw.media1);
                             mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                            //mp.setVolume(count, count);
                             mp.start();
                         }
                     });
@@ -58,14 +54,24 @@ public class MainActivity extends Activity {
                         public void onClick(View view) {
                             MediaPlayer mp = MediaPlayer.create(MainActivity.this, R.raw.inception);
                             mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                            //mp.setVolume(count, count);
                             mp.start();
                         }
                     });
                 }
             }
         });
+    }
 
+    @Override
+    public void onResume() {
+        originalVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
+        super.onResume();
+    }
 
+    @Override
+    public void onPause() {
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, originalVolume, 0);
+        super.onPause();
     }
 }
